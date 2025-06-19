@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Crime Complaint</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    .chat-container {
+      position: relative;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .robot {
+      width: 150px;
+      height: auto;
+    }
+
+    .speech-bubble {
+      position: relative;
+      background: #00aaff;
+      border-radius: 0.4em;
+      padding: 10px;
+      color: #fff;
+      max-width: 300px;
+      margin-top: 10px;
+    }
+
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 100%;
+      width: 0;
+      height: 0;
+      border: 15px solid transparent;
+      border-right-color: #00aaff;
+      border-left: 0;
+      border-bottom: 0;
+      margin-top: -7.5px;
+    }
+
+    .chat-log {
+      height: 200px;
+      width: 100%;
+      background-color: #f7f7f7;
+      border-radius: 10px;
+      padding: 10px;
+      overflow-y: auto;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .chat-log div {
+      margin: 5px 0;
+    }
+
+    .chat-log .bot {
+      color: #555;
+    }
+
+    .chat-log .user {
+      text-align: right;
+      color: #007bff;
+    }
+
+    .footer {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer input {
+      width: 85%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .footer button {
+      width: 10%;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+<div class="chat-container">
+  <h1>Cyber Crime Complaint</h1>
+  <img src="robot.png" alt="Robot" class="robot">
+  <div class="speech-bubble">
+    <p>Hello! How can I help you today?</p>
+  </div>
+  <div class="chat-log" id="chatLog"></div>
+  <div class="footer">
+    <input type="text" id="userInput" placeholder="Type your complaint here...">
+    <button onclick="processInput()">Send</button>
+  </div>
+</div>
+
+<script>
+  function processInput() {
+    const userInput = document.getElementById('userInput').value;
+    const chatLog = document.getElementById('chatLog');
+
+    if (userInput.trim() === '') {
+      return;
+    }
+
+    appendMessage('user', userInput);
+
+    let url = '';
+    const lowerInput = userInput.toLowerCase();
+
+    if (lowerInput.includes('woman')) {
+      url = 'https://cybercrime.gov.in/Webform/Crime_ReportAnonymously.aspx';
+    } else if (lowerInput.includes('child')) {
+      url = 'https://cybercrime.gov.in/Webform/Crime_ReportAnonymously.aspx';
+    } else if (lowerInput.includes('financial')) {
+      url = 'https://cybercrime.gov.in/Webform/Crime_AuthoLogin.aspx?rnt=5';
+    } else if (lowerInput.includes('anonymous')) {
+      url = 'https://cybercrime.gov.in/Webform/Crime_ReportAnonymously.aspx';
+    } else if (lowerInput.includes('other')) {
+      url = 'https://cybercrime.gov.in/Webform/Crime_AuthoLogin.aspx';
+    } else {
+      appendMessage('bot', 'Please enter a valid complaint type: woman, child, financial, anonymous, or other.');
+      return;
+    }
+
+    appendMessage('bot', 'Redirecting you to the appropriate page...');
+    setTimeout(() => {
+      window.location.href = url;
+    }, 2000);
+  }
+
+  function appendMessage(sender, message) {
+    const chatLog = document.getElementById('chatLog');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = sender;
+    messageDiv.textContent = message;
+    chatLog.appendChild(messageDiv);
+    chatLog.scrollTop = chatLog.scrollHeight;
+    document.getElementById('userInput').value = '';
+  }
+
+  document.getElementById('userInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();  // Prevent the default action of the Enter key (like submitting a form)
+      processInput();
+    }
+  });
+</script>
+</body>
+</html>
